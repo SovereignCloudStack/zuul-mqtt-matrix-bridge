@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  mqtt-broker:
+    container_name: mqtt-broker
+    image: "eclipse-mosquitto:${MOSSQUITTO_VERSION}"
+    restart: unless-stopped
+    ports:
+      - "${MOSSQUITTO_PORT}:1883" #default mqtt port
+      - "${MOSSQUITTO_WS_PORT}:9001" #default mqtt port for websockets
+    volumes:
+      - "${MOSSQUITTO_CONFIG_DIR}:/mosquitto/config"
+      - "${MOSSQUITTO_DATA_DIR}:/mosquitto/data"
+    networks:
+      - mqtt-matrix
+  
+  mqtt-matrix-bridge:
+    container_name: mqtt-matrix-bridge
+    image: "registry.scs.community/zuul/zuul-mqtt-matrix-bridge:${MQTT_MATRIX_BRIDGE_VERSION}"
+    restart: unless-stopped
+    depends_on:
+      - mqtt-broker
+    environment:
+      GO_LOG: "${MQTT_MATRIX_BRIDGE_LOG_LEVEL}"
+    command: >
+      -matrix-homeserver ${MATRIX_HOMESERVER}
+      -matrix-msg-template ${MATRIX_MSG_TEMPLATE}
+      -matrix-room-id ${MATRIX_ROOM_ID}
+      -matrix-token ${MATRIX_TOKEN}
+      -mqtt-broker ${MQTT_BROKER}
+      -mqtt-user ${MQTT_USER}
+      -mqtt-pass ${MQTT_PASS}
+      -mqtt-topic ${MQTT_TOPIC}
+      -mqtt-topic-qos ${MQTT_TOPIC_QOS}
+    networks:
+      - mqtt-matrix
+
+networks:
+  mqtt-matrix:
+    name: "${NETWORK_NAME}"
+    external: "${NETWORK_IS_EXTERNAL}"

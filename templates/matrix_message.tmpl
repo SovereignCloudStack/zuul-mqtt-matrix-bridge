@@ -1,0 +1,19 @@
+<h3>{{if eq .Action "start"}} ℹ️ {{else if eq .Action "success"}} ✅ {{else if eq .Action "failure"}} ❌ {{else}} ⚠️ {{end}} {{ .Message }}</h3>
+
+<ul>
+    <li><p>Pipeline: {{ .Pipeline }}</p></li>
+    <li><p>Project: {{ .Project }}</p></li>
+    {{if not .Change }}
+    <li><p>Branch: {{ .Branch }}</p></li>
+    {{ end }}
+    {{if and .Change .ChangeURL }}
+    <li><p>Pull request: <a href="{{ .ChangeURL }}">#{{ .Change }}</a></p></li>
+    {{ end }}
+    <li><p>Trigger time: {{ .TriggerTime }}</p></li>
+    {{if (index .Buildset.Builds 0).EndTime }}
+    <li><p>End time: {{ (index .Buildset.Builds 0).EndTime }}</p></li>
+    {{ end }}
+</ul>
+{{if and (index .Buildset.Builds 0).WebURL (index .Buildset.Builds 0).LogURL }}
+<p><i>Check out <a href="{{ (index .Buildset.Builds 0).WebURL }}">build results</a> and examine the associated <a href="{{ (index .Buildset.Builds 0).LogURL }}">logs</a></i></p>
+{{ end }}
