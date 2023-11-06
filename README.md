@@ -7,7 +7,7 @@ Currently, Zuul-CI has the capability to distribute build reports to various sup
 However, there is currently no built-in support for conveniently sending these build reports to the Matrix chat.
 
 This project offers a straightforward solution for receiving build reports from Zuul's MQTT reporter and,
-using predefined template, forwarding these messages to a Matrix chat room.
+using a predefined template, forwarding these messages to a Matrix chat room.
 
 ![arch](./docs/images/bridge.png)
 
@@ -19,7 +19,7 @@ This section describes a method for integrating the zuul-mqtt-matrix-bridge proj
 
 The MQTT broker serves as the backend system responsible for handling messages between the Zuul MQTT client, acting as a publisher, and the zuul-mqtt-matrix-bridge client, acting as a subscriber. The [docker-compose](./docker/docker-compose.yaml) file deploys the Eclipse Mosquitto server, an open-source message broker that utilizes the MQTT protocol.
 
-You can explore a basic MQTT broker configuration file, [mosquitto.conf](./docker/mosquitto_config/mosquitto.conf), which ensures broker persistence and enforces client authentication via a password file. A password file is a straightforward method for storing usernames and their corresponding encrypted passwords in a single file. Additionally, an example [password file](./docker/mosquitto_config/pwfile) is provided, already containing a user record for the username `mqtt-user` with the password `secret`. 
+You can explore a basic MQTT broker configuration file, [mosquitto.conf](./docker/mosquitto_config/mosquitto.conf), which ensures broker persistence and enforces client authentication via a password file. A password file is a straightforward method for storing usernames and their corresponding encrypted passwords in a single file. Additionally, an example [password file](./docker/mosquitto_config/pwfile) is provided, already containing a user record for the username `mqtt-user` with the password `secret`. You are strongly advised to change these credentials.
 
 If you need to modify or create an additional password file, please refer to this [guide](https://mosquitto.org/documentation/authentication-methods/).
 
