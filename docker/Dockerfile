@@ -8,7 +8,7 @@ COPY pkg/ pkg/
 COPY templates/ templates/
 COPY main.go main.go
 RUN ls -lt 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o zuul-mqtt-matrix-bridge main.go
+RUN go build -a -o zuul-mqtt-matrix-bridge main.go
 
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
