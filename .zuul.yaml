@@ -1,0 +1,13 @@
+---
+- job:
+    name: mqtt-matrix-bridge-test
+    parent: base
+    run: playbooks/test.yaml
+
+- project:
+    name: SovereignCloudStack/zuul-mqtt-matrix-bridge
+    default-branch: main
+    merge-mode: "squash-merge"
+    periodic-hourly:
+      jobs:
+      - mqtt-matrix-bridge-test
