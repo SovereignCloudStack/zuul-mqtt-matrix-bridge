@@ -137,6 +137,8 @@ The following examples are generated using the default template file `templates/
 
 - End time: 2000-10-20 15:13:14 +0200 CEST
 
+- Result: SUCCESS
+
 _Check out [build results](http://example/build) and examine the associated [logs](http://example/logs)_
 
 <hr style="width:30%;margin-left:0;"></hr>
@@ -164,6 +166,8 @@ _Check out [build results](http://example/build) and examine the associated [log
 - Trigger time: 2000-10-20 15:10:42 +0200 CEST
 
 - End time: 2000-10-20 15:13:14 +0200 CEST
+
+- Result: FAILURE
 
 _Check out [build results](http://example/build) and examine the associated [logs](http://example/logs)_
 

@@ -10,10 +10,16 @@
     <li><p>Pull request: <a href="{{ .ChangeURL }}">#{{ .Change }}</a></p></li>
     {{ end }}
     <li><p>Trigger time: {{ .TriggerTime }}</p></li>
-    {{if (index .Buildset.Builds 0).EndTime }}
+    {{ $length := len .Buildset.Builds }}
+    {{if and (gt $length 0) (index .Buildset.Builds 0).EndTime }}
     <li><p>End time: {{ (index .Buildset.Builds 0).EndTime }}</p></li>
     {{ end }}
+    {{if and (gt $length 0) (index .Buildset.Builds 0).Result }}
+    <li><p>Result: {{ (index .Buildset.Builds 0).Result }}</p></li>
+    {{ end }}
 </ul>
-{{if and (index .Buildset.Builds 0).WebURL (index .Buildset.Builds 0).LogURL }}
+{{if and (gt $length 0) (index .Buildset.Builds 0).WebURL (index .Buildset.Builds 0).LogURL }}
 <p><i>Check out <a href="{{ (index .Buildset.Builds 0).WebURL }}">build results</a> and examine the associated <a href="{{ (index .Buildset.Builds 0).LogURL }}">logs</a></i></p>
+{{else if and (gt $length 0) (index .Buildset.Builds 0).WebURL }}
+<p><i>Check out <a href="{{ (index .Buildset.Builds 0).WebURL }}">build results</a></i></p>
 {{ end }}
