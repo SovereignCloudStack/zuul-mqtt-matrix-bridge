@@ -9,6 +9,10 @@ However, there is currently no built-in support for conveniently sending these b
 This project offers a straightforward solution for receiving build reports from Zuul's MQTT reporter and,
 using a predefined template, forwarding these messages to a Matrix chat room.
 
+Currently, a single instance of "zuul-mqtt-matrix-bridge" has the capability to subscribe to multiple MQTT topics.
+However, it forwards all messages to just one Matrix room, resulting in an N:1 relationship between MQTT topics
+and Matrix rooms for each "zuul-mqtt-matrix-bridge" instance. 
+
 ![arch](./docs/images/bridge.png)
 
 ## Usage
@@ -49,7 +53,7 @@ See the current list of supported configuration options along with their default
         The MQTT user
 ```
 
-All of the configuration options mentioned above can be overridden by environment variables specified in the docker-compose file. You can refer to the [.env](./docker/.env) file for the default values.
+All the configuration options mentioned above can be overridden by environment variables specified in the docker-compose file. You can refer to the [.env](./docker/.env) file for the default values.
 
 ### Deployment 
 
@@ -86,7 +90,7 @@ password=secret
 ...
 ```
 
-4. Set up the pipeline to transmit MQTT reports using the connection named as `mqtt`. Refer to the relevant Zuul [configuration options](https://zuul-ci.org/docs/zuul/latest/drivers/mqtt.html#reporter-configuration) for more details
+4. Set up the pipeline to transmit MQTT reports using the connection named as `mqtt`. Refer to the relevant Zuul [configuration options](https://zuul-ci.org/docs/zuul/latest/drivers/mqtt.html#reporter-configuration) for more details.
 
 ```yaml
 - pipeline:
@@ -133,6 +137,8 @@ The following examples are generated using the default template file `templates/
 
 - End time: 2000-10-20 15:13:14 +0200 CEST
 
+- Result: SUCCESS
+
 _Check out [build results](http://example/build) and examine the associated [logs](http://example/logs)_
 
 <hr style="width:30%;margin-left:0;"></hr>
@@ -161,6 +167,8 @@ _Check out [build results](http://example/build) and examine the associated [log
 
 - End time: 2000-10-20 15:13:14 +0200 CEST
 
+- Result: FAILURE
+
 _Check out [build results](http://example/build) and examine the associated [logs](http://example/logs)_
 
 <hr style="width:30%;margin-left:0;"></hr>
@@ -172,7 +180,7 @@ Refer to the relevant [docs](./docs/local_development.md) section.
 ## TODOs
 
 - Add unit tests
-- Suport TLS for MQTT connection
+- Add TLS support for "MQTT broker" <-> "zuul-mqtt-matrix-bridge" connection
 
 # Acknowledgment
 
