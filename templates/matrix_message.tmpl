@@ -1,25 +1,32 @@
-<h3>{{if eq .Action "start"}} ℹ️ {{else if eq .Action "success"}} ✅ {{else if eq .Action "failure"}} ❌ {{else}} ⚠️ {{end}} {{ .Message }}</h3>
+<h3>{{ if eq .Action "start" }} ℹ️ {{ else if eq .Action "success" }} ✅ {{ else if eq .Action "failure" }} ❌ {{ else }} ⚠️ {{ end }} {{ .Message }}</h3>
 
+<b>Pipeline:</b> {{ .Pipeline }}<br>
+<b>Project:</b> {{ .Project }}<br>
+{{ if not .Change }}
+<b>Branch:</b> {{ .Branch }}<br>
+{{ end }}
+{{ if and .Change .ChangeURL }}
+<b>Pull request:</b> <a href="{{ .ChangeURL }}">#{{ .Change }}</a><br>
+{{ end }}
+<b>Triggered:</b> {{ .TriggerTime }}<br>
+
+{{ $length := len .Buildset.Builds }}
+{{ if and (gt $length 0) (index .Buildset.Builds 0).WebURL }}
+
+{{ $baseURL := getBaseUrl (index .Buildset.Builds 0).WebURL }}
+{{ $buildsetURL := print $baseURL "/t/" .Tenant "/buildset/" .Buildset.UUID }}
+
+<b>Buildset:</b> <a href="{{ $buildsetURL }}">{{ .Buildset.Result }}</a><br>
+<b>Builds:</b>
 <ul>
-    <li><p>Pipeline: {{ .Pipeline }}</p></li>
-    <li><p>Project: {{ .Project }}</p></li>
-    {{if not .Change }}
-    <li><p>Branch: {{ .Branch }}</p></li>
-    {{ end }}
-    {{if and .Change .ChangeURL }}
-    <li><p>Pull request: <a href="{{ .ChangeURL }}">#{{ .Change }}</a></p></li>
-    {{ end }}
-    <li><p>Trigger time: {{ .TriggerTime }}</p></li>
-    {{ $length := len .Buildset.Builds }}
-    {{if and (gt $length 0) (index .Buildset.Builds 0).EndTime }}
-    <li><p>End time: {{ (index .Buildset.Builds 0).EndTime }}</p></li>
-    {{ end }}
-    {{if and (gt $length 0) (index .Buildset.Builds 0).Result }}
-    <li><p>Result: {{ (index .Buildset.Builds 0).Result }}</p></li>
-    {{ end }}
+  {{ range .Buildset.Builds }}
+    <li><b>{{ .JobName }}:</b> <a href="{{ .WebURL }}">{{ .Result }}</a></li>
+    <ul>
+      <li><b>Start/End:</b> {{ .StartTime }} -> {{ .EndTime }}</li>
+      {{ if .LogURL }}
+      <li><i>Analyze the related <a href="{{ .LogURL }}">logs</a></i></li>
+      {{ end }}
+    </ul>
+  {{ end }}
 </ul>
-{{if and (gt $length 0) (index .Buildset.Builds 0).WebURL (index .Buildset.Builds 0).LogURL }}
-<p><i>Check out <a href="{{ (index .Buildset.Builds 0).WebURL }}">build results</a> and examine the associated <a href="{{ (index .Buildset.Builds 0).LogURL }}">logs</a></i></p>
-{{else if and (gt $length 0) (index .Buildset.Builds 0).WebURL }}
-<p><i>Check out <a href="{{ (index .Buildset.Builds 0).WebURL }}">build results</a></i></p>
 {{ end }}

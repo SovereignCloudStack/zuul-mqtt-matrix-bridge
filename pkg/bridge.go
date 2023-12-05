@@ -3,14 +3,17 @@ package bridge
 import (
 	"bytes"
 	"encoding/json"
+	"html/template"
+	"log/slog"
+	"net/url"
+	"os"
+	"path/filepath"
+	"strconv"
+	"time"
+
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/grokify/html-strip-tags-go"
 	"github.com/matrix-org/gomatrix"
-	"html/template"
-	"log/slog"
-	"os"
-	"strconv"
-	"time"
 )
 
 type jsonTime time.Time
@@ -33,6 +36,7 @@ type MqttMessage struct {
 	ZuulRef     string      `json:"zuul_ref"`
 	Buildset    struct {
 		UUID   string `json:"uuid"`
+		Result string `json:"result,omitempty"`
 		Builds []struct {
 			JobName      string        `json:"job_name"`
 			Voting       bool          `json:"voting"`
@@ -145,7 +149,24 @@ func New(
 	matrixClient := connectMatrix(matrixHomeserver, matrixToken)
 	mqttClient := connectMqtt(mqttBroker, mqttUser, mqttPassword)
 
-	matrixTemplate, err := template.ParseFiles(*matrixTemplateFile)
+	// Zuul's MQTT report does not contain a buildset URL; therefore, we use the following workaround:
+	// Extract the base URL from the build URL, and then within the template file, we can construct and use the buildset URL.
+	// The extract function is taken from: https://stackoverflow.com/questions/72387330/how-to-extract-base-url-using-golang
+	funcMap := template.FuncMap{
+		"getBaseUrl": func(rawUrl string) string {
+			url, err := url.Parse(rawUrl)
+			if err != nil {
+				slog.Error("URLparse: unable to parse URL", slog.Any("error", err))
+				return ""
+			}
+			url.Path = ""
+			url.RawQuery = ""
+			url.Fragment = ""
+			return url.String()
+		},
+	}
+
+	matrixTemplate, err := template.New(filepath.Base(*matrixTemplateFile)).Funcs(funcMap).ParseFiles(*matrixTemplateFile)
 
 	if err != nil {
 		slog.Error("Bridge: unable to load matrix message template", slog.Any("error", err))

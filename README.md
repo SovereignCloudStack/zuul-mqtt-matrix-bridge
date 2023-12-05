@@ -115,61 +115,53 @@ The following examples are generated using the default template file `templates/
 
 ℹ️ Starting example jobs.
 
-- Pipeline: example pipeline
-
-- Project: example/project
-
-- Pull request: [#XX](http://example)
-
-- Trigger time: 2000-10-20 15:10:42 +0200 CEST
+**Pipeline:** example pipeline<br>
+**Project:** example/project<br>
+**Pull request:** [#PR](http://example)<br>
+**Triggered:** 2000-10-20 09:00:40 +0200 CEST
 
 <hr style="width:30%;margin-left:0;"></hr>
 
 ✅ Build succeeded.
 
-- Pipeline: example pipeline
-
-- Project: example/project
-
-- Pull request: [#XX](http://example)
-
-- Trigger time: 2000-10-20 15:10:42 +0200 CEST
-
-- End time: 2000-10-20 15:13:14 +0200 CEST
-
-- Result: SUCCESS
-
-_Check out [build results](http://example/build) and examine the associated [logs](http://example/logs)_
+**Pipeline:** example pipeline<br>
+**Project:** example/project<br>
+**Pull request:** [#PR](http://example)<br>
+**Triggered:** 2000-10-20 09:00:40 +0200 CEST<br>
+**Buildset:** [SUCCESS](http://example/buildset)<br>
+**Builds:**
+- **example-job-1:** [SUCCESS](http://example/build1)
+  - **Start/End:** 2000-10-20 09:02:40 +0000 UTC -> 2000-10-20 09:03:14 +0000 UTC
+  - _Analyze the related [logs](http://example/logs1)_
+- **example-job-2:** [SUCCESS](http://example/build2)
+  - **Start/End:** 2000-10-20 09:02:40 +0000 UTC -> 2000-10-20 09:03:15 +0000 UTC
+  - _Analyze the related [logs](http://example/logs2)_
 
 <hr style="width:30%;margin-left:0;"></hr>
 
 ⚠️ Build canceled (example pipeline).
 
-- Pipeline: example pipeline
-
-- Project: example/project
-
-- Pull request: [#XX](http://example)
-
-- Trigger time: 2000-10-20 15:10:42 +0200 CEST
+**Pipeline:** example pipeline<br>
+**Project:** example/project<br>
+**Pull request:** [#PR](http://example)<br>
+**Triggered:** 2000-10-20 09:00:40 +0200 CEST
 
 <hr style="width:30%;margin-left:0;"></hr>
 
 ❌ Build failed (example pipeline).
 
-- Pipeline: example pipeline
-
-- Project: example/project
-
-- Pull request: [#XX](http://example)
-
-- Trigger time: 2000-10-20 15:10:42 +0200 CEST
-
-- End time: 2000-10-20 15:13:14 +0200 CEST
-
-- Result: FAILURE
-
-_Check out [build results](http://example/build) and examine the associated [logs](http://example/logs)_
+**Pipeline:** example pipeline<br>
+**Project:** example/project<br>
+**Pull request:** [#PR](http://example)<br>
+**Triggered:** 2000-10-20 09:00:40 +0200 CEST<br>
+**Buildset:** [FAILURE](http://example/buildset)<br>
+**Builds:**
+- **example-job-1:** [SUCCESS](http://example/build1)
+  - **Start/End:** 2000-10-20 09:02:40 +0000 UTC -> 2000-10-20 09:03:14 +0000 UTC
+  - _Analyze the related [logs](http://example/logs1)_
+- **example-job-2:** [FAILURE](http://example/build2)
+  - **Start/End:** 2000-10-20 09:02:40 +0000 UTC -> 2000-10-20 09:03:15 +0000 UTC
+  - _Analyze the related [logs](http://example/logs2)_
 
 <hr style="width:30%;margin-left:0;"></hr>
 
