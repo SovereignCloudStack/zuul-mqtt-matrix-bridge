@@ -1,9 +1,9 @@
 <h3>{{ if eq .Action "start" }} ℹ️ {{ else if eq .Action "success" }} ✅ {{ else if eq .Action "failure" }} ❌ {{ else }} ⚠️ {{ end }} {{ .Message }}</h3>
 
 <b>Pipeline:</b> {{ .Pipeline }}<br>
-<b>Project:</b> {{ .Project }}<br>
+<b>Project:</b> <a href="https://github.com/{{ .Project }}/">{{ .Project }}</a><br>
 {{ if not .Change }}
-<b>Branch:</b> {{ .Branch }}<br>
+<b>Branch:</b> <a href="https://github.com/{{ .Project }}/tree/{{ .Branch }}">{{ .Branch }}</a><br>
 {{ end }}
 {{ if and .Change .ChangeURL }}
 <b>Pull request:</b> <a href="{{ .ChangeURL }}">#{{ .Change }}</a><br>
@@ -22,7 +22,7 @@
   {{ range .Buildset.Builds }}
     <li><b>{{ .JobName }}:</b> <a href="{{ .WebURL }}">{{ .Result }}</a></li>
     <ul>
-      <li><b>Start/End:</b> {{ .StartTime }} -> {{ .EndTime }}</li>
+      <li><b>Start/End:</b></br>{{ .StartTime }} → {{ .EndTime }}</li>
       {{ if .LogURL }}
       <li><i>Analyze the related <a href="{{ .LogURL }}">logs</a></i></li>
       {{ end }}
