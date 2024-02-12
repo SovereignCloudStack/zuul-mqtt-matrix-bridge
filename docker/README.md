@@ -12,7 +12,7 @@ docker buildx create --use --name buildx_instance
 docker buildx build \
   --file docker/Dockerfile \
   --platform=darwin/arm64,linux/amd64 \
-  --tag registry.scs.community/zuul/zuul-mqtt-matrix-bridge:0.3.0 \
+  --tag registry.scs.community/zuul/zuul-mqtt-matrix-bridge:0.4.0 \
   --tag registry.scs.community/zuul/zuul-mqtt-matrix-bridge:latest \
   --provenance=false \
   --push .
