@@ -1,5 +1,9 @@
 # :bridge_at_night: Zuul MQTT reporter -> Matrix chat bridge
 
+[![GitHub Latest Release](https://img.shields.io/github/v/release/SovereignCloudStack/zuul-mqtt-matrix-bridge?logo=github)](https://github.com/SovereignCloudStack/zuul-mqtt-matrix-bridge/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sovereignCloudStack/zuul-mqtt-matrix-bridge)](https://goreportcard.com/report/github.com/sovereignCloudStack/zuul-mqtt-matrix-bridge)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 Relay MQTT reports from [Zuul-CI](https://zuul-ci.org/) to the [Matrix chat](https://matrix.org/).
 
 Currently, Zuul-CI has the capability to distribute build reports to various supported platforms
