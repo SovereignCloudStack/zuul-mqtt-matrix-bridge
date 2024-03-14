@@ -6,7 +6,7 @@
 <b>Branch:</b> <a href="https://github.com/{{ .Project }}/tree/{{ .Branch }}">{{ .Branch }}</a><br>
 {{ end }}
 {{ if and .Change .ChangeURL }}
-<b>Pull request:</b> <a href="{{ .ChangeURL }}">#{{ .Change }}</a><br>
+<b>Pull request:</b> <a href="{{ .ChangeURL }}">#{{ .Change }} by {{ or .Owner "NONE" }}</a><br>
 {{ end }}
 <b>Triggered:</b> {{ .TriggerTime }}<br>
 
