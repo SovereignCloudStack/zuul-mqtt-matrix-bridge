@@ -15,8 +15,9 @@
 
 {{ $baseURL := getBaseUrl (index .Buildset.Builds 0).WebURL }}
 {{ $buildsetURL := print $baseURL "/t/" .Tenant "/buildset/" .Buildset.UUID }}
+{{ $jobHistorytURL := print $baseURL "/t/" .Tenant "/builds?job_name=" .Buildset.JobName }}
 
-<b>Buildset:</b> <a href="{{ $buildsetURL }}">{{ .Buildset.Result }}</a><br>
+<b>Buildset:</b> <a href="{{ $buildsetURL }}">{{ .Buildset.Result }}</a> (<a href="{{ $jobHistorytURL }}">History</a>)<br>
 <b>Builds:</b>
 <ul>
   {{ range .Buildset.Builds }}
