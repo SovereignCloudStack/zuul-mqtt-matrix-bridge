@@ -1,5 +1,16 @@
-<h3>{{ if eq .Action "start" }} ℹ️ {{ else if eq .Action "success" }} ✅ {{ else if eq .Action "failure" }} ❌ {{ else }} ⚠️ {{ end }} {{ .Message }}</h3>
-
+{{ $color := "orange" }}
+{{ $icon := "⚠️" }}
+{{ if eq .Action "start" }}
+  {{ $color = "white" }}
+  {{ $icon = "ℹ️" }}
+{{ else if eq .Action "success" }}
+  {{ $color = "limegreen" }}
+  {{ $icon = "✅" }}
+{{ else if eq .Action "failure" }}
+  {{ $color = "red" }}
+  {{ $icon = "🚨" }}
+{{ end }}
+<h4><font color={{ $color }}>{{ $icon }} {{ .Message }}</font></h4>
 <b>Pipeline:</b> {{ .Pipeline }}<br>
 <b>Project:</b> <a href="https://github.com/{{ .Project }}/">{{ .Project }}</a><br>
 {{ if not .Change }}
