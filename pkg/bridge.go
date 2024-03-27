@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -149,9 +150,13 @@ func New(
 	matrixClient := connectMatrix(matrixHomeserver, matrixToken)
 	mqttClient := connectMqtt(mqttBroker, mqttUser, mqttPassword)
 
-	// Zuul's MQTT report does not contain a buildset URL; therefore, we use the following workaround:
-	// Extract the base URL from the build URL, and then within the template file, we can construct and use the buildset URL.
-	// The extract function is taken from: https://stackoverflow.com/questions/72387330/how-to-extract-base-url-using-golang
+	// getBaseUrl:
+	//   Zuul's MQTT report does not contain a buildset URL; therefore, we use the following workaround:
+	//   Extract the base URL from the build URL, and then within the template file, we can construct and use the buildset URL.
+	//   The extract function is taken from: https://stackoverflow.com/questions/72387330/how-to-extract-base-url-using-golang
+	// filterMessage:
+	//   Zuul might generate a lengthy warning section embedded within the message. To prevent an excessively long title
+	//   in the Matrix chat, the filterMessage function can be utilized within the template to isolate the message part.
 	funcMap := template.FuncMap{
 		"getBaseUrl": func(rawUrl string) string {
 			url, err := url.Parse(rawUrl)
@@ -164,6 +169,10 @@ func New(
 			url.Fragment = ""
 			return url.String()
 		},
+		"filterMessage": func(message string) string {
+			splitted := strings.Split(message, "Warning:")
+			return splitted[0]
+		}, 
 	}
 
 	matrixTemplate, err := template.New(filepath.Base(*matrixTemplateFile)).Funcs(funcMap).ParseFiles(*matrixTemplateFile)

@@ -10,7 +10,9 @@
   {{ $color = "red" }}
   {{ $icon = "🚨" }}
 {{ end }}
-<h4><font color={{ $color }}>{{ $icon }} {{ .Message }}</font></h4>
+{{ $message := filterMessage (.Message) }}
+
+<h4><font color={{ $color }}>{{ $icon }} {{ $message }}</font></h4>
 <b>Pipeline:</b> {{ .Pipeline }}<br>
 <b>Project:</b> <a href="https://github.com/{{ .Project }}/">{{ .Project }}</a><br>
 {{ if not .Change }}
