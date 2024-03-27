@@ -13,19 +13,22 @@
 {{ $length := len .Buildset.Builds }}
 {{ if and (gt $length 0) (index .Buildset.Builds 0).WebURL }}
 
-{{ $baseURL := getBaseUrl (index .Buildset.Builds 0).WebURL }}
-{{ $buildsetURL := print $baseURL "/t/" .Tenant "/buildset/" .Buildset.UUID }}
-{{ $jobHistorytURL := print $baseURL "/t/" .Tenant "/builds?job_name=" .Buildset.JobName }}
+{{ $tenant := .Tenant }}
+{{ $project := .Project }}
 
-<b>Buildset:</b> <a href="{{ $buildsetURL }}">{{ .Buildset.Result }}</a> (<a href="{{ $jobHistorytURL }}">History</a>)<br>
+{{ $baseURL := getBaseUrl (index .Buildset.Builds 0).WebURL }}
+{{ $buildsetURL := print $baseURL "/t/" $tenant "/buildset/" .Buildset.UUID }}
+
+<b>Buildset:</b> <a href="{{ $buildsetURL }}">{{ .Buildset.Result }}</a><br>
 <b>Builds:</b>
 <ul>
   {{ range .Buildset.Builds }}
+    {{ $jobHistoryURL := print $baseURL "/t/" $tenant "/builds?job_name=" .JobName "&project=" $project }}
     <li><b>{{ .JobName }}:</b> <a href="{{ .WebURL }}">{{ .Result }}</a></li>
     <ul>
       <li><b>Start/End:</b></br>{{ .StartTime }} → {{ .EndTime }}</li>
       {{ if .LogURL }}
-      <li><i>Analyze the related <a href="{{ .LogURL }}">logs</a></i></li>
+      <li><i>Analyze the related <a href="{{ .LogURL }}">logs</a>, explore job <a href="{{ $jobHistoryURL }}">history</a></i></li>
       {{ end }}
     </ul>
   {{ end }}
